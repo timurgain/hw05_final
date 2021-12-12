@@ -141,8 +141,8 @@ def profile_follow(request, username):
     author = User.objects.get(username=username)
     user = User.objects.get(username=request.user)
     # дважды не подпишешься \ сам на себя не подпишешься
-    if (Follow.objects.filter(author=author.id, user=user.id).exists()
-        or author.id == user.id):
+    if (Follow.objects.filter(author=author.id, user=user.id).exists() or 
+            author.id == user.id):
         return redirect(
             to=reverse('posts:profile', kwargs={'username': username}),)
     Follow.objects.create(author=author, user=user)
