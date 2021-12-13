@@ -110,6 +110,7 @@ class Comment(models.Model):
     )
 
     class Meta:
+        
         ordering = ('-created',)
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
@@ -137,12 +138,14 @@ class Follow(models.Model):
 
     class Meta:
         constraints = [
-            # models.CheckConstraint(
-            #     check=~models.Q(user__not=author),
-            #     name='a user is not equal an author'
-            # ),
+            models.CheckConstraint(
+                check=~models.Q(user=models.F('author')),
+                name='user and author can not be equal',
+            ),
             models.UniqueConstraint(
-                fields=['author', 'user'], name='unique_booking')
+                fields=['user', 'author'],
+                name='user can not subscribe twice',
+            ),
         ]
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
