@@ -175,9 +175,7 @@ class TestComment(TestCase):
         # и проверить коммент на странице post_detail
         response_post_detail = self.author_client.get(
             reverse('posts:post_detail', kwargs={'id': self.post.id}),)
-        post_detail_comment = (response_post_detail
-                               .context.get('comments')[0].text)
-        self.assertEqual(jast_created_comment, post_detail_comment)
+        self.assertContains(response_post_detail, jast_created_comment)
 
     def test_comments_form_guest_user(self):
         """Checking comment_form with guest_user on post_detail/add_comment url,

@@ -55,15 +55,12 @@ def profile(request, username):
 
 
 def post_detail(request, id):
-    """Provides rendering post detail pages."""
+    """Provides rendering post detail pages with comments."""
     post = Post.objects.get(pk=id)
-    user = User.objects.get(pk=post.author_id)
-    count = Post.objects.filter(author_id=post.author_id).count()
-    comments = Comment.objects.filter(post_id=post.id)  # post.comments.all()
     comment_form = CommentForm(request.POST or None)
     context = {
-        'post': post, 'user': user, 'count': count,
-        'comments': comments, 'comment_form': comment_form,
+        'post': post,
+        'comment_form': comment_form,
     }
     return render(request, 'posts/post_detail.html', context)
 

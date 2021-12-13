@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from yatube.settings import EMPTY_VALUE
-from .models import Group, Post
+from .models import Group, Post, Comment, Follow
 
 
 @admin.register(Post)
@@ -15,4 +15,12 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Follow)
+class FollowAdmin(admin.ModelAdmin):
     pass

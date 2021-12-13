@@ -23,10 +23,11 @@
           Автор: {{ post.author.get_full_name }}
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center">
-          Всего постов автора:  <span >{{ count }}</span>
+          {% comment %} Всего постов автора:  <span >{{ count }}</span> {% endcomment %}
+          Всего постов автора:  <span >{{ post.author.posts.count }}</span>
         </li>
         <li class="list-group-item">
-          <a href="{% url 'posts:profile' username=user.username %}">
+          <a href="{% url 'posts:profile' username=post.author %}">
             все посты пользователя
           </a>
         </li>
@@ -61,20 +62,23 @@
           </div>
         </div>
       {% endif %}
-      {% for comment in comments %}
-        <div class="media mb-4">
-          <div class="media-body">
-            <h5 class="mt-0">
-              <a href="{% url 'posts:profile' username=comment.author %}">
-                {{ comment.author.get_full_name }}
-              </a>
-            </h5>
-            <p>
-              {{ comment.text }}
-            </p>
+
+      {% with post.comments.all as comments %}
+        {% for comment in comments %}
+          <div class="media mb-4">
+            <div class="media-body">
+              <h5 class="mt-0">
+                <a href="{% url 'posts:profile' username=comment.author %}">
+                  {{ comment.author.get_full_name }}
+                </a>
+              </h5>
+              <p>
+                {{ comment.text }}
+              </p>
+            </div>
           </div>
-        </div>
-      {% endfor %}
+        {% endfor %}
+      {% endwith %}
       
     </article>
   </div>

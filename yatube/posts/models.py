@@ -100,7 +100,7 @@ class Comment(models.Model):
         related_name='comments',
     )
     text = models.TextField(
-        blank=True,
+        blank=False,
         verbose_name='Комментарий',
         help_text='Оставь здесь комментарий',
     )
@@ -136,6 +136,14 @@ class Follow(models.Model):
     )
 
     class Meta:
+        constraints = [
+            # models.CheckConstraint(
+            #     check=~models.Q(user__not=author),
+            #     name='a user is not equal an author'
+            # ),
+            models.UniqueConstraint(
+                fields=['author', 'user'], name='unique_booking')
+        ]
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
 
