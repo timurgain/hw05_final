@@ -1,12 +1,15 @@
+from django.db.utils import IntegrityError
 from django.test import TestCase
 
-from posts.models import Group, Post, User
+from posts.models import Comment, Follow, Group, Post, User
 
 
 GROUP_TITLE = 'Тест групп'
 POST_TEXT = 'Ж' * 100
 POST_STR = 'Ж' * 15
 SLUG = 'test-slug'
+AUTHOR = 'author'
+AUTH_USER = 'auth_user'
 
 
 class PostModelTest(TestCase):
@@ -55,3 +58,37 @@ class PostModelTest(TestCase):
         """Checking the __str__ method for the Group model."""
         posible_str = PostModelTest.test_group.title
         self.assertEqual(posible_str, GROUP_TITLE)
+
+
+class CommentModelTest(TestCase):
+    def setUp(self) -> None:
+        self.auth_author = User.objects.create(username=AUTHOR)
+        self.auth_user = User.objects.create(username=AUTH_USER)
+        self.post = Post.objects.create(
+            author=self.auth_author, text=POST_TEXT)
+
+    def test_user_can_comment_post(self):
+        """Checking user can comment post, creates db record."""
+        before = Comment.objects.count()
+        Comment.objects.create(
+            post=self.post, author=self.auth_user, text='comment',
+        )
+        after = Comment.objects.count()
+        self.assertEqual(after, before + 1)
+
+
+class FollowModelTest(TestCase):
+    def setUp(self) -> None:
+        self.auth_author = User.objects.create(username=AUTHOR)
+        self.auth_user = User.objects.create(username=AUTH_USER)
+
+    def test_user_cannot_follow_user(self):
+        """Checking user can not follow user."""
+        with self.assertRaises(IntegrityError):
+            Follow.objects.create(user=self.auth_user, author=self.auth_user)
+
+    def test_user_cannot_follow_twice(self):
+        """Checking user can not follow user."""
+        Follow.objects.create(user=self.auth_user, author=self.auth_author)
+        with self.assertRaises(IntegrityError):
+            Follow.objects.create(user=self.auth_user, author=self.auth_author)
