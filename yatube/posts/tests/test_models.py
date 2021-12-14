@@ -88,7 +88,7 @@ class FollowModelTest(TestCase):
             Follow.objects.create(user=self.auth_user, author=self.auth_user)
 
     def test_user_cannot_follow_twice(self):
-        """Checking user can not follow user."""
+        """Checking user can not follow twice."""
         Follow.objects.create(user=self.auth_user, author=self.auth_author)
         with self.assertRaises(IntegrityError):
             Follow.objects.create(user=self.auth_user, author=self.auth_author)
