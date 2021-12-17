@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'posts.apps.PostsConfig',
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
@@ -46,6 +47,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'yatube.urls'
@@ -73,6 +75,10 @@ WSGI_APPLICATION = 'yatube.wsgi.application'
 
 # added it myself
 ALLOWED_HOSTS = ['127.0.0.1', '[::1]', 'localhost', 'testserver']
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+] 
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
